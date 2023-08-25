@@ -1,3 +1,3 @@
-for i in range(10):
+rng = int(input())
+for i in range(rng):
     print(i)
-# while True: ...
