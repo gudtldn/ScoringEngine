@@ -29,8 +29,7 @@ def main(answer_file: str, submission_file: str, score_result: ScoreResult, use_
                 answer_stdout = answer_splited[-1]
 
             with subprocess.Popen(["python", submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as submission_process:
-                for i in input_value:
-                    submission_stdout, _ = submission_process.communicate(input=i, timeout=timeout)
+                submission_stdout, _ = submission_process.communicate(input="\n".join(input_value), timeout=timeout)
 
         else:
             with subprocess.Popen(["python", answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
