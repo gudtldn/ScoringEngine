@@ -22,7 +22,6 @@ class ScoreResult(TypedDict):
 def main(answer_file: str, submission_file: str, score_result: ScoreResult, use_submission_input: bool = False, timeout: float = 1.0):
     try:
         if use_submission_input:
-            # TODO: 입력값 만들기
             with subprocess.Popen(["python", answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
                 answer_stdout, _ = answer_process.communicate()
                 answer_splited = answer_stdout.split("|")
