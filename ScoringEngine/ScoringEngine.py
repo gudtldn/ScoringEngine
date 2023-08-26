@@ -61,7 +61,7 @@ if __name__ == "__main__":
     parser.add_argument("submission_file", help="path to submission file", type=str)
     parser.add_argument("-i", "--input", dest="use_submission_input", help="use submission input", action="store_true")
     parser.add_argument("-t", "--timeout", dest="timeout", help="timeout second", default=1.0, type=float)
-    parser.add_argument("-n", "--number", dest="number", help="number of test cases", default=5, type=int)
+    parser.add_argument("-n", "--number", dest="number", help="number of iterations", default=5, type=int)
     args: SystemArgs = parser.parse_args()
 
     score_result: ScoreResult = {
