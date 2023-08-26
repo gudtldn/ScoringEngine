@@ -4,6 +4,8 @@ from argparse import ArgumentParser
 from threading import Thread
 from typing import TypedDict
 
+from .tools.color_text import *
+
 
 class SystemArgs:
     submission_file: str
@@ -58,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument("answer_file", help="path to answer file", type=str)
     parser.add_argument("submission_file", help="path to submission file", type=str)
     parser.add_argument("-i", "--input", dest="use_submission_input", help="use submission input", action="store_true")
-    parser.add_argument("-t", "--timeout", dest="timeout", help="timeout second", default=1, type=float)
+    parser.add_argument("-t", "--timeout", dest="timeout", help="timeout second", default=1.0, type=float)
     parser.add_argument("-n", "--number", dest="number", help="number of test cases", default=5, type=int)
     args: SystemArgs = parser.parse_args()
 
@@ -87,4 +89,7 @@ if __name__ == "__main__":
     for t in thread:
         t.join()
 
-    print("accepted" if score_result['accepted'] == sum(score_result.values()) else "wrong answer", f"({score_result['accepted']}/{sum(score_result.values())})")
+    print(
+        color_text("accepted", ETextColor.GREEN) if score_result['accepted'] == sum(score_result.values()) else color_text("wrong answer", ETextColor.RED),
+        f"\n{score_result}"
+    )
