@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from threading import Thread
 from typing import TypedDict
 
-from .tools.color_text import *
+from tools.color_text import *
 
 
 class SystemArgs:
