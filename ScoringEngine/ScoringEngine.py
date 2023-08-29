@@ -21,24 +21,16 @@ class ScoreResult(TypedDict):
     timeout: int
 
 
-def main(answer_file: str, submission_file: str, score_result: ScoreResult, use_submission_input: bool = False, timeout: float = 1.0):
+def main(answer_file: str, submission_file: str, score_result: ScoreResult, timeout: float = 1.0):
     try:
-        if use_submission_input:
-            with subprocess.Popen(["python", answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
-                answer_stdout, _ = answer_process.communicate()
-                answer_splited = answer_stdout.split("|")
-                input_value = answer_splited[:-1]
-                answer_stdout = answer_splited[-1]
+        with subprocess.Popen([answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
+            answer_stdout, _ = answer_process.communicate()
+            answer_splited = answer_stdout.split("|")
+            input_value = answer_splited[:-1]
+            answer_stdout = answer_splited[-1]
 
-            with subprocess.Popen(["python", submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as submission_process:
-                submission_stdout, _ = submission_process.communicate(input="\n".join(input_value), timeout=timeout)
-
-        else:
-            with subprocess.Popen(["python", answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
-                answer_stdout, _ = answer_process.communicate()
-
-            with subprocess.Popen(["python", submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as submission_process:
-                submission_stdout, _ = submission_process.communicate(timeout=timeout)
+        submission_process = subprocess.Popen([submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+        submission_stdout, _ = submission_process.communicate(input="\n".join(input_value), timeout=timeout)
 
     except subprocess.TimeoutExpired:
         submission_process.kill()
@@ -59,7 +51,6 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("answer_file", help="path to answer file", type=str)
     parser.add_argument("submission_file", help="path to submission file", type=str)
-    parser.add_argument("-i", "--input", dest="use_submission_input", help="use submission input", action="store_true")
     parser.add_argument("-t", "--timeout", dest="timeout", help="timeout second", default=1.0, type=float)
     parser.add_argument("-n", "--number", dest="number", help="number of iterations", default=5, type=int)
     args: SystemArgs = parser.parse_args()
@@ -77,10 +68,9 @@ if __name__ == "__main__":
                 path.abspath(args.answer_file),
                 path.abspath(args.submission_file),
                 score_result,
-                args.use_submission_input,
                 args.timeout
             )
-        ) for _ in range(args.number if args.use_submission_input else 1)
+        ) for _ in range(args.number)
     ]
 
     for t in thread:
