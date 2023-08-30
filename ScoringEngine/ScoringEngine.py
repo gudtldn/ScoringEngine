@@ -26,7 +26,7 @@ def main(answer_file: str, submission_file: str, score_result: ScoreResult, time
         with subprocess.Popen([answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
             answer_stdout, _ = answer_process.communicate()
             answer_splited = answer_stdout.split("|")
-            input_value = answer_splited[:-1]
+            input_value = map(lambda x: x.lstrip(), answer_splited[:-1])
             answer_stdout = answer_splited[-1]
 
         submission_process = subprocess.Popen([submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
