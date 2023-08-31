@@ -24,6 +24,10 @@ void ScoringEngine::run()
 {
     // answer_process
     std::string answer_stdout;
+    SupportFileExtention::insert_prefix(
+        StringHelper::get_file_ext(sys_args.answer_file),
+        sys_args.answer_file
+    );
 
     Process answer_process(sys_args.answer_file, 10.0f);
     answer_process.run(answer_stdout);
@@ -40,6 +44,10 @@ void ScoringEngine::run()
 
     // submission_process
     std::string submission_stdout;
+    SupportFileExtention::insert_prefix(
+        StringHelper::get_file_ext(sys_args.submission_file),
+        sys_args.submission_file
+    );
 
     Process submission_process(sys_args.submission_file, sys_args.timeout);
     submission_process.run(submission_stdout, submission_stdin);

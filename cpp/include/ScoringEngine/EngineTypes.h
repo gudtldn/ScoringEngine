@@ -18,6 +18,21 @@ struct ScoringResult
     int timeout;
 };
 
+namespace SupportFileExtention
+{
+    void insert_prefix(const std::string& ext, std::string& cmd)
+    {
+        if (ext == ".exe")
+        {
+            return;
+        }
+        else if (ext == ".py")
+        {
+            cmd = "python " + cmd;
+        }
+    }
+};
+
 namespace ColorString
 {
     enum EColor

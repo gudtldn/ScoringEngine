@@ -17,11 +17,6 @@ int main(int argc, char* argv[])
     parser.add_argument("submission_file")
         .help("path to submission file");
 
-    parser.add_argument("-i", "--input")
-        .help("use submission input")
-        .default_value(false)
-        .implicit_value(true);
-
     parser.add_argument("-t", "--timeout")
         .help("timeout in seconds")
         .default_value(1.0f)
@@ -73,6 +68,7 @@ int main(int argc, char* argv[])
     }
 
 
+    // TODO: 출력결과 수정하기
     // print result
     std::cout << (
         score_result.accepted == sys_args.number_of_iterations ?
