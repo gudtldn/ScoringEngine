@@ -1,0 +1,1 @@
+g++ -std=c++23 -Wall -I include main.cpp -o ScoringEngine -l ws2_32 -L stage/lib -l boost_filesystem-mgw12-mt-x64-1_83
