@@ -11,7 +11,6 @@ from tools.support_file_extention import *
 class SystemArgs:
     submission_file: str
     answer_file: str
-    use_submission_input: bool
     number: int
     timeout: float
 
