@@ -1,5 +1,7 @@
+// This file uses Boost libraries for file path
+
 #include <thread>
-#include <filesystem>
+#include <boost/filesystem.hpp>
 #include "argparse/argparse.hpp"
 #include "ScoringEngine/ScoringEngine.h"
 #include "ScoringEngine/EngineTypes.h"
@@ -43,8 +45,8 @@ int main(int argc, char* argv[])
 
     SystemArgs sys_args{};
 
-    sys_args.answer_file = parser.get<std::string>("answer_file");
-    sys_args.submission_file = parser.get<std::string>("submission_file");
+    sys_args.answer_file = boost::filesystem::canonical(parser.get<std::string>("answer_file")).string();
+    sys_args.submission_file = boost::filesystem::canonical(parser.get<std::string>("submission_file")).string();
     sys_args.timeout = parser.get<float>("timeout");
     sys_args.number_of_iterations = parser.get<int>("number");
 
