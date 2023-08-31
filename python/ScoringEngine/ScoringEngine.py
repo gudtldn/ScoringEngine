@@ -6,6 +6,7 @@ from typing import TypedDict
 
 from tools.color_text import *
 
+# TODO: 지원되는 확장자
 
 class SystemArgs:
     submission_file: str
