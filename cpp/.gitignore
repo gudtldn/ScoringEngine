@@ -1,3 +1,4 @@
 test/
 include/boost/
 stage/lib
+*.exe
