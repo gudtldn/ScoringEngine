@@ -5,8 +5,8 @@ from threading import Thread
 from typing import TypedDict
 
 from tools.color_text import *
+from tools.support_file_extention import *
 
-# TODO: 지원되는 확장자
 
 class SystemArgs:
     submission_file: str
@@ -24,13 +24,19 @@ class ScoreResult(TypedDict):
 
 def main(answer_file: str, submission_file: str, score_result: ScoreResult, timeout: float = 1.0):
     try:
-        with subprocess.Popen([answer_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
+        answer_cmd = [answer_file]
+        insert_prefix(path.splitext(answer_file)[1], answer_cmd)
+
+        with subprocess.Popen(answer_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as answer_process:
             answer_stdout, _ = answer_process.communicate()
             answer_splited = answer_stdout.split("|")
             input_value = map(lambda x: x.lstrip(), answer_splited[:-1])
             answer_stdout = answer_splited[-1]
 
-        submission_process = subprocess.Popen([submission_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+        submission_cmd = [submission_file]
+        insert_prefix(path.splitext(submission_file)[1], submission_cmd)
+
+        submission_process = subprocess.Popen(submission_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
         submission_stdout, _ = submission_process.communicate(input="\n".join(input_value), timeout=timeout)
 
     except subprocess.TimeoutExpired:
@@ -38,6 +44,7 @@ def main(answer_file: str, submission_file: str, score_result: ScoreResult, time
         score_result['timeout'] += 1
 
     except Exception as e:
+        print(e)
         submission_process.kill()
         raise e
 
@@ -80,7 +87,18 @@ if __name__ == "__main__":
     for t in thread:
         t.join()
 
-    print(
-        color_text("accepted", ETextColor.GREEN) if score_result['accepted'] == sum(score_result.values()) else color_text("wrong answer", ETextColor.RED),
-        f"\n{score_result}"
-    )
+
+    result_text = ""
+    if args.number != 0 and sum(score_result.values()) == 0:
+        result_text = color_text("EngineError", ETextColor.RED)
+    
+    elif score_result['accepted'] == args.number:
+        result_text = f"{color_text('accepted', ETextColor.GREEN)}\n{score_result}"
+
+    elif score_result['timeout'] > 0:
+        result_text = f"{color_text('timeout', ETextColor.RED)}\n{score_result}"
+
+    else:
+        result_text = f"{color_text('wrong answer', ETextColor.RED)}\n{score_result}"
+
+    print(result_text)
