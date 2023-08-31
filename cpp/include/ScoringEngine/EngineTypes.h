@@ -28,7 +28,7 @@ namespace SupportFileExtention
         }
         else if (ext == ".py")
         {
-            cmd = "python " + cmd;
+            cmd = "python.exe \"" + cmd + "\"";
         }
     }
 };

@@ -67,6 +67,6 @@ void Process::run(std::string& stdOut, const std::string& stdIn = "")
     pipe_stream << stdIn << std::endl;
 
     ios.run();
-    stdOut = dataOut.get();
+    stdOut = StringHelper::remove_carriage_return(dataOut.get());
     child.wait();
 }

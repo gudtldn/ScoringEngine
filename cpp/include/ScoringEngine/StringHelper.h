@@ -42,6 +42,16 @@ namespace StringHelper
         return result;
     }
 
+    std::string remove_carriage_return(const std::string& str)
+    {
+        std::string result = str;
+        result.erase(
+            std::remove(result.begin(), result.end(), '\r'),
+            result.end()
+        );
+        return result;
+    }
+
     // file path 관련
     std::pair<std::string, std::string> splitext(const std::string &path)
     {
