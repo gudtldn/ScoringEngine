@@ -46,6 +46,7 @@ void Process::timeout_handler(boost::system::error_code ec)
 void Process::run(std::string& stdOut, const std::string& stdIn = "")
 {
     std::future<std::string> dataOut;
+    std::future<std::string> stdErr;
 
     deadline_timer.expires_from_now(boost::posix_time::milliseconds(timeout_ms));
     deadline_timer.async_wait(boost::bind(&Process::timeout_handler, this, boost::asio::placeholders::error));
@@ -56,6 +57,7 @@ void Process::run(std::string& stdOut, const std::string& stdIn = "")
         command,
         bp::std_in < pipe_stream,
         bp::std_out > dataOut,
+        bp::std_err > stdErr,
         ios,
         group,
         bp::on_exit([this](int e, std::error_code ec) -> void
