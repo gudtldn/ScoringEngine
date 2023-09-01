@@ -6,6 +6,7 @@
 #include <boost/process/async.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
+#include "ScoringEngine/StringHelper.h"
 
 namespace bp = boost::process;
 
