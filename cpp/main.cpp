@@ -74,28 +74,28 @@ int main(int argc, char* argv[])
     
     if (sys_args.number_of_iterations != sum_result)
     {
-        result_string += ColorString::color_string(
+        result_string = ColorString::color_string(
             "EngineError",
             ColorString::RED
         );
     }
     else if (score_result.accepted == sys_args.number_of_iterations)
     {
-        result_string += ColorString::color_string(
+        result_string = ColorString::color_string(
             "Accepted",
             ColorString::GREEN
         );
     }
     else if (score_result.timeout > 0)
     {
-        result_string += ColorString::color_string(
+        result_string = ColorString::color_string(
             "TimeOut",
             ColorString::YELLOW
         );
     }
     else
     {
-        result_string += ColorString::color_string(
+        result_string = ColorString::color_string(
             "WrongAnswer",
             ColorString::RED
         );
