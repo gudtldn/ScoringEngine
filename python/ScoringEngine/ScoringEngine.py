@@ -90,7 +90,7 @@ if __name__ == "__main__":
     result_text = ""
     if args.number != 0 and sum(score_result.values()) == 0:
         result_text = color_text("EngineError", ETextColor.RED)
-    
+
     elif score_result['accepted'] == args.number:
         result_text = f"{color_text('accepted', ETextColor.GREEN)}\n{score_result}"
 

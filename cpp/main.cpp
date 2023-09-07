@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     // print result
     int sum_result = score_result.accepted + score_result.wrong_answer + score_result.timeout;
     std::string result_string;
-    
+
     if (sys_args.number_of_iterations != sum_result)
     {
         result_string = ColorString::color_string(

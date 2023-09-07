@@ -20,7 +20,7 @@ namespace StringHelper
 
         return result;
     }
-    
+
     std::string trim(const std::string& str)
     {
         std::string result = str;
