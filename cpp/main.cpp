@@ -68,13 +68,40 @@ int main(int argc, char* argv[])
     }
 
 
-    // TODO: 출력결과 수정하기
     // print result
-    std::cout << (
-        score_result.accepted == sys_args.number_of_iterations ?
-            ColorString::color_string("Accepted", ColorString::GREEN) :
-            ColorString::color_string("Wrong Answer", ColorString::RED)
-    ) << "\n";
+    int sum_result = score_result.accepted + score_result.wrong_answer + score_result.timeout;
+    std::string result_string;
+    
+    if (sys_args.number_of_iterations != sum_result)
+    {
+        result_string += ColorString::color_string(
+            "EngineError",
+            ColorString::RED
+        );
+    }
+    else if (score_result.accepted == sys_args.number_of_iterations)
+    {
+        result_string += ColorString::color_string(
+            "Accepted",
+            ColorString::GREEN
+        );
+    }
+    else if (score_result.timeout > 0)
+    {
+        result_string += ColorString::color_string(
+            "TimeOut",
+            ColorString::YELLOW
+        );
+    }
+    else
+    {
+        result_string += ColorString::color_string(
+            "WrongAnswer",
+            ColorString::RED
+        );
+    }
+
+    std::cout << result_string << "\n";
     std::cout << "Accepted: " << score_result.accepted << ", "
               << "Wrong Answer: " << score_result.wrong_answer << ", "
               << "Time Out: " << score_result.timeout << std::endl;
