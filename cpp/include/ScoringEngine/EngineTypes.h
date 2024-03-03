@@ -20,7 +20,10 @@ struct ScoringResult
 
 namespace SupportFileExtention
 {
-    void insert_prefix(const std::string& ext, std::string& cmd)
+    /// @brief 확장자에 맞춰 명령어를 작성
+    /// @param ext 파일 확장자
+    /// @param cmd 실행할 명령어
+    void insert_prefix_cmd(const std::string& ext, std::string& cmd)
     {
         if (ext == ".exe")
         {
@@ -58,6 +61,11 @@ namespace ColorString
         "\033[0m"
     };
 
+
+    /// @brief 문자열에 색을 적용함
+    /// @param str 적용할 문자열
+    /// @param color 적용할 색깔
+    /// @return 색깔이 적용된 문자열
     std::string color_string(const std::string& str, EColor color)
     {
         return colors[color] + str + colors[END];

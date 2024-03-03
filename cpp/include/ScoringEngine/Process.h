@@ -34,8 +34,8 @@ Process::Process(const std::string& cmd, float timeout)
 
 void Process::timeout_handler(boost::system::error_code ec)
 {
-    if (ec == boost::asio::error::operation_aborted)
-        return;
+    if (ec == boost::asio::error::operation_aborted) return;
+
     if (deadline_timer.expires_at() <= boost::asio::deadline_timer::traits_type::now())
     {
         group.terminate();

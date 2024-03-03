@@ -24,7 +24,7 @@ void ScoringEngine::run()
 {
     // answer_process
     std::string answer_stdout;
-    SupportFileExtention::insert_prefix(
+    SupportFileExtention::insert_prefix_cmd(
         StringHelper::get_file_ext(sys_args.answer_file),
         sys_args.answer_file
     );
@@ -44,7 +44,7 @@ void ScoringEngine::run()
 
     // submission_process
     std::string submission_stdout;
-    SupportFileExtention::insert_prefix(
+    SupportFileExtention::insert_prefix_cmd(
         StringHelper::get_file_ext(sys_args.submission_file),
         sys_args.submission_file
     );
