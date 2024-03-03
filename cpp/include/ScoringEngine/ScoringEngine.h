@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <mutex>
 #include "ScoringEngine/EngineTypes.h"
 #include "ScoringEngine/StringHelper.h"
 #include "ScoringEngine/Process.h"
@@ -12,10 +13,11 @@ class ScoringEngine
 {
 private:
     SystemArgs sys_args;
-    ScoringResult *result;
+    ScoringResult& result;
+    std::mutex& result_mutex;
 
 public:
-    ScoringEngine(const SystemArgs& in_args, ScoringResult* in_result) : sys_args(in_args), result(in_result){};
+    ScoringEngine(const SystemArgs& in_args, ScoringResult& in_result, std::mutex& in_mutex) : sys_args(in_args), result(in_result), result_mutex(in_mutex){};
 
     void run();
 };
@@ -54,16 +56,18 @@ void ScoringEngine::run()
 
 
     // update result
+    result_mutex.lock();
     if (submission_process.is_timeout())
     {
-        result->timeout++;
+        result.timeout++;
     }
     else if (answer == submission_stdout)
     {
-        result->accepted++;
+        result.accepted++;
     }
     else
     {
-        result->wrong_answer++;
+        result.wrong_answer++;
     }
+    result_mutex.unlock();
 }

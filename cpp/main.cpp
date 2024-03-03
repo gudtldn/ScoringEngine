@@ -1,6 +1,7 @@
 // This file uses Boost libraries for file path
 
 #include <thread>
+#include <mutex>
 #include <boost/filesystem.hpp>
 #include "argparse/argparse.hpp"
 #include "ScoringEngine/ScoringEngine.h"
@@ -9,7 +10,7 @@
 int main(int argc, char* argv[])
 {
     // init parser
-    argparse::ArgumentParser parser("ScoringEngine", "0.1.0");
+    argparse::ArgumentParser parser("ScoringEngine", "0.1.1");
 
     parser.add_argument("answer_file")
         .help("path to answer file");
@@ -52,12 +53,13 @@ int main(int argc, char* argv[])
 
     // thread setting
     std::thread threads[sys_args.number_of_iterations];
+    std::mutex result_mutex;
 
     for (int i = 0; i < sys_args.number_of_iterations; i++)
     {
-        threads[i] = std::thread([sys_args, &score_result]() -> void
+        threads[i] = std::thread([&sys_args, &score_result, &result_mutex]() -> void
         {
-            ScoringEngine engine(sys_args, &score_result);
+            ScoringEngine engine(sys_args, std::ref(score_result), std::ref(result_mutex));
             engine.run();
         });
     }
