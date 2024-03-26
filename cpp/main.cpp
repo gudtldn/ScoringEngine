@@ -3,6 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <boost/filesystem.hpp>
+#include <boost/asio/thread_pool.hpp>
 #include "argparse/argparse.hpp"
 #include "ScoringEngine/ScoringEngine.h"
 #include "ScoringEngine/EngineTypes.h"
@@ -52,22 +53,19 @@ int main(int argc, char* argv[])
 
 
     // thread setting
-    std::thread threads[sys_args.number_of_iterations];
+    boost::asio::thread_pool pool(std::thread::hardware_concurrency() * 4);
     std::mutex result_mutex;
 
     for (int i = 0; i < sys_args.number_of_iterations; i++)
     {
-        threads[i] = std::thread([&sys_args, &score_result, &result_mutex]() -> void
+        boost::asio::post(pool, [&sys_args, &score_result, &result_mutex]() -> void
         {
             ScoringEngine engine(sys_args, std::ref(score_result), std::ref(result_mutex));
             engine.run();
         });
     }
 
-    for (int i = 0; i < sys_args.number_of_iterations; i++)
-    {
-        threads[i].join();
-    }
+    pool.join();
 
 
     // print result
