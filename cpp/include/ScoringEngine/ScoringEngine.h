@@ -56,7 +56,7 @@ void ScoringEngine::run()
 
 
     // update result
-    result_mutex.lock();
+    std::lock_guard<std::mutex> lock(result_mutex);
     if (submission_process.is_timeout())
     {
         result.timeout++;
@@ -69,5 +69,4 @@ void ScoringEngine::run()
     {
         result.wrong_answer++;
     }
-    result_mutex.unlock();
 }
